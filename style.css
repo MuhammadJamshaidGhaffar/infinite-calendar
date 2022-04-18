@@ -13,21 +13,26 @@ body{
  background-repeat: no-repeat;
  background-size: cover;
  background-position-y: center;
- 
+ color: white;
+
 }
 
 #main-wrapper{
-    background: white;
+   
     width: 83rem;
     margin: auto;
-    transform: translateY(12rem);
-    border: 2px solid red;
+    transform: translateY(8rem);
+  
 }
 #main-container{
-    box-shadow: 2px;
-    background-color: gray;
-    /* border: 2px solid red; */
-    
-    padding: 2rem;
+    background-color:black;
+    border: 3px solid gray;
+    border-radius: 0.8rem;
+    margin: 1rem;
+}
 
+h1{
+    font-size: 3.5rem;
+    text-align: center;
+    margin-top: 3rem;
 }
