@@ -47,3 +47,33 @@
     background-color: yellow;
 }
 #signal-green{background-color: rgb(0, 255, 34);} */
+
+/* ################### live-timer-styling ################  */
+#live-timer-div{
+    width: 12rem;
+    height: 5rem;
+    background-color: red;
+    color: white;
+    font-size: 4rem;
+    border-radius: 1rem;
+    text-align: center;
+    margin: auto;
+}
+/* ############################################################### */
+#date-question-div-wrapper{
+    width: 20rem;
+    /* height: 7rem; */
+    margin: 8rem auto 0rem;
+    border-radius: 1rem;
+    padding: 2rem 3rem;
+    background: -webkit-gradient(linear, left bottom, left top, from(rgba(63,94,251,1)), to(rgba(70,135,252,1)));
+    background: linear-gradient(0deg, rgba(63,94,251,1) 0%, rgba(70,135,252,1) 100%);
+    -webkit-box-shadow: rgba(63,94,251,0.2) 0px 40px 29px 0px;
+    box-shadow: rgba(63,94,251,0.2) 0px 40px 29px 0px;
+}
+#date-question-div{
+    width: 100%;
+    height: 100%;
+    font-size: 3rem;
+    margin: auto;
+}
