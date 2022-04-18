@@ -25,14 +25,144 @@ body{
   
 }
 #main-container{
-    background-color:black;
+    background-color: black;
     border: 3px solid gray;
     border-radius: 0.8rem;
-    margin: 1rem;
+    padding-bottom: 4rem;
 }
 
 h1{
-    font-size: 3.5rem;
-    text-align: center;
+    font-size: 4rem;
     margin-top: 3rem;
+    padding: 1rem 2rem;
+    /* background-color: red; */
+    display: inline-block;
+    border-radius: 2rem;
+    transform: translateX(21rem);
+
+    background: -webkit-gradient(linear, left bottom, left top, from(rgba(63,94,251,1)), to(rgba(70,135,252,1)));
+    background: linear-gradient(0deg, rgba(63,94,251,1) 0%, rgba(70,135,252,1) 100%);
+    -webkit-box-shadow: rgba(63,94,251,0.2) 0px 40px 29px 0px;
+            box-shadow: rgba(63,94,251,0.2) 0px 40px 29px 0px;
 }
+
+.contents{
+    transform: translateX(12rem);
+}
+
+/* ######### timer-div########## */
+.timer-div {
+    margin-top: 4rem;
+    font-size: 16px;
+    padding: 1em 3.3em;
+    -webkit-transform: perspective(200px) rotateX(3deg);
+            transform: perspective(200px) rotateX(3deg);
+    color: white;
+    font-weight: 900;
+    border: none;
+    border-radius: 5px;
+    background: -webkit-gradient(linear, left bottom, left top, from(rgba(63,94,251,1)), to(rgba(70,135,252,1)));
+    background: linear-gradient(0deg, rgba(63,94,251,1) 0%, rgba(70,135,252,1) 100%);
+    -webkit-box-shadow: rgba(63,94,251,0.2) 0px 40px 29px 0px;
+            box-shadow: rgba(63,94,251,0.2) 0px 40px 29px 0px;
+    will-change: transform;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+    border-bottom: 2px solid rgba(70,135,252,1);
+    display: inline-block;
+   }
+   
+   .timer-div:hover {
+    -webkit-transform: perspective(180px) rotateX(8deg) translateY(2px);
+            transform: perspective(180px) rotateX(8deg) translateY(2px);
+   }
+   
+   
+
+.timer-label{
+    font-size: 2rem;
+}
+.timer-box{
+    
+    font-size: 1.8rem;
+    margin-left: 2rem;
+    padding: 0.3rem 1rem;
+    border-radius: 0.4rem;
+    outline: none;
+
+    
+}
+
+/* ################# key-Div ################  */
+.key-btn {
+    margin-top: 2rem;
+    display: inline-block;
+    font-size: 16px;
+    padding: 1em 3.3em;
+    -webkit-transform: perspective(200px) rotateX(3deg);
+            transform: perspective(200px) rotateX(3deg);
+    color: white;
+    font-weight: 900;
+    border: none;
+    border-radius: 5px;
+    background: -webkit-gradient(linear, left bottom, left top, from(rgba(63,94,251,1)), to(rgba(70,135,252,1)));
+    background: linear-gradient(0deg, rgba(63,94,251,1) 0%, rgba(70,135,252,1) 100%);
+    -webkit-box-shadow: rgba(63,94,251,0.2) 0px 40px 29px 0px;
+            box-shadow: rgba(63,94,251,0.2) 0px 40px 29px 0px;
+    will-change: transform;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+    border-bottom: 2px solid rgba(70,135,252,1);
+   }
+   
+   .key-btn:hover {
+    -webkit-transform: perspective(180px) rotateX(8deg) translateY(2px);
+            transform: perspective(180px) rotateX(8deg) translateY(2px);
+   }
+   
+   .key-btn:active {
+    -webkit-transform: perspective(170px) rotateX(25deg) translateY(5px);
+            transform: perspective(170px) rotateX(25deg) translateY(5px);
+   }
+
+.key-btn p{
+    font-size: 2rem;
+    display: inline-block;
+}
+
+.key-btn .value{
+    margin-left:5rem ;
+}
+
+/* ############## START BUTTON STYLING ###############  */
+.start-btn {
+    margin-top: 2rem;
+    margin-left: 16rem;
+    display: inline-block;
+    font-size: 16px;
+    padding: 1em 3.3em;
+    -webkit-transform: perspective(200px) rotateX(3deg);
+            transform: perspective(200px) rotateX(3deg);
+    color: white;
+    font-weight: 900;
+    border: none;
+    border-radius: 5px;
+    background: -webkit-gradient(linear, left bottom, left top, from(rgba(63,94,251,1)), to(rgba(70,135,252,1)));
+    background: linear-gradient(0deg, rgba(63,94,251,1) 0%, rgba(70,135,252,1) 100%);
+    -webkit-box-shadow: rgba(63,94,251,0.2) 0px 40px 29px 0px;
+            box-shadow: rgba(63,94,251,0.2) 0px 40px 29px 0px;
+    will-change: transform;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+    border-bottom: 2px solid rgba(70,135,252,1);
+   }
+   
+   .start-btn:hover {
+    -webkit-transform: perspective(180px) rotateX(8deg) translateY(2px);
+            transform: perspective(180px) rotateX(8deg) translateY(2px);
+   }
+   
+   .start-btn:active {
+    -webkit-transform: perspective(170px) rotateX(25deg) translateY(5px);
+            transform: perspective(170px) rotateX(25deg) translateY(5px);
+   }
