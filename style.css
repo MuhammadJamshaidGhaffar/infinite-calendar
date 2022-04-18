@@ -40,6 +40,8 @@ body{
     border: 3px solid gray;
     border-radius: 0.8rem;
     padding-bottom: 4rem;
+    height: 100%;
+    width: 100%;
 }
 
 h1{
@@ -222,9 +224,30 @@ h1{
        html{
            font-size: 40%;
        }
-       .start-btn{
-           margin-left: 8rem;
+       #main-wrapper{
+   
+        height: 80rem;    
+    }
+    h1{
+        margin-top: 14rem;
+        display: inline-block;
+        padding: 3rem 7rem;
+    transform: translateX(3rem);
+    }
+    .timer-div {
+        padding: 2rem 4rem;
+        
        }
+       .timer-label{
+        font-size: 4rem;
+    }
+    .key-btn p{
+        font-size: 4rem;
+    }
+    .start-btn{
+           margin-left: 8rem;
+           font-size: 4rem;
+    }
    }
 
    @media (max-width:370px)
