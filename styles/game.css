@@ -77,3 +77,25 @@
     font-size: 3rem;
     margin: auto;
 }
+
+/* ###################### ANSWER STYLING ########################  */
+#answer-div{
+    display: flex;
+    margin: 5rem auto 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.btn{
+    width: 6rem;
+    height: 6rem;
+    border-radius: 6rem;
+    background-color: #5bb700;
+    padding: 0.5rem;
+    text-align: center;
+    font-size: 4rem;
+    margin: 1rem;
+    transition: transform 0.5s ease-in;
+}
+/* .btn:active{
+    transform: translateY(1rem);
+} */
