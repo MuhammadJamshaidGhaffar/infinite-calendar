@@ -1,33 +1,4 @@
-html{
-    font-size: 62.5%;
-    
-}
 
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body{
-    /* background: url(background.gif);   
-    background-repeat: no-repeat;
-    -webkit-background-size: cover;
-     -moz-background-size: cover;
-     -o-background-size: cover;
-     background-size: cover;
-    background-position-y: center; */
- color: white;
- border: 2px solid red;
-
-}
-.background{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-}
 #main-wrapper{
    
     width: 83rem;
