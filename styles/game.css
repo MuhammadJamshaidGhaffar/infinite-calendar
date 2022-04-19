@@ -4,6 +4,7 @@
     height: 80vh;
     margin: auto;
     transform: translateY(8rem);
+    transition: opacity 0.5s linear;
   
 }
 #game-container{
@@ -22,7 +23,9 @@
     box-shadow: rgba(63,94,251,0.2) 0px 40px 29px 0px;
     width: 28rem;
     height: 6rem;
-    transform: translate(32rem, 11rem);
+    transform: translate(-50%, -7rem);
+    position: absolute;
+    left: 50%;
     border-radius: 4rem;
     display: flex;
     justify-content: end;
@@ -58,6 +61,7 @@
     border-radius: 1rem;
     text-align: center;
     margin: auto;
+    margin-top: 2rem;
 }
 /* ################### COUNTER DIV ################  */
 #counter-div{
