@@ -7,8 +7,8 @@
   
 }
 #game-container{
-    background-color: black;
-    border: 3px solid gray;
+    /* background-color: black; */
+    /* border: 3px solid gray; */
     border-radius: 0.8rem;
     padding-bottom: 4rem;
     height: 100%;
@@ -59,6 +59,20 @@
     text-align: center;
     margin: auto;
 }
+/* ################### COUNTER DIV ################  */
+#counter-div{
+    text-align: end;
+    margin-right: 18rem;
+}
+#counter-div p{
+    background-color: #5bb700;
+    margin-top: 4rem;
+    padding: 2rem 4rem;
+    width: fit-content;
+    font-size: 2rem;
+    border-radius: 2rem;
+    display: inline-block;
+}
 /* ############################################################### */
 #date-question-div-wrapper{
     width: 20rem;
@@ -99,3 +113,29 @@
 /* .btn:active{
     transform: translateY(1rem);
 } */
+
+/* ################### MEDIA QUERIES ######################  */
+@media (max-width:550px)
+{
+    #live-timer-div{
+        width: 17rem;
+        padding: 2rem;
+        height: 8rem;
+        font-size: 4rem;
+        border-radius: 1rem;
+    }
+    #counter-div p{
+        padding: 3rem 5rem;
+        font-size: 3rem;
+    }
+    #date-question-div-wrapper{
+        width: 20rem;
+        padding: 3rem 3rem;
+    }
+    .btn{
+        width: 11rem;
+        height: 11rem;
+        border-radius: 11rem;
+        font-size: 8rem;
+    }
+}
