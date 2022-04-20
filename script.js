@@ -96,18 +96,19 @@ let timeIntervalId = 0;
 timeIntervalId = setInterval(()=>{
   timer--;
   document.getElementById("live-timer-div").innerHTML = timer;
-  if(timer < 60)
+  if(timer <= 0)
   {
+    // stop timer
     clearInterval(timeIntervalId);
     // remove event Listeners
   document.removeEventListener("keydown", keyDownFunc );
-  document.addEventListener("keyup" , btnUpFunc) ;
+  document.removeEventListener("keyup" , keyUpFunc) ;
     let btns =document.getElementsByClassName("btn");
     for(let i=0 ; i < 7 ; i++)
     {
       console.log("Removing Button " , i+1)
-      btns[i].removeEventListener("mousedown" , btnFuncs[i]) ;  
-      btns[i].addEventListener("mouseup" , btnUp) ; 
+      btns[i].removeEventListener("mousedown" , btnDownFuncs[i]) ;  
+      btns[i].removeEventListener("mouseup" , btnUpFuncs[i]) ; 
     }
     endGame();
   }
@@ -137,16 +138,14 @@ timeIntervalId = setInterval(()=>{
     
   }
 
-  // add event listeners
+  
   function keyDownFunc (event){
-    console.log("key pressed");
-    console.log(parseInt(event.key));
     btnPress(parseInt(event.key));
   }
   function keyUpFunc (event){
     btnUp(parseInt(event.key));
   }
-  
+  // add event listeners
   document.addEventListener("keydown" , keyDownFunc) ;
   document.addEventListener("keyup" , keyUpFunc) ;
   startKey = "4";
@@ -183,9 +182,41 @@ function endGame()
 {
   
   //hide game menu 
-  document.getElementById("game-wrapper").style.display = "block";
-  document.getElementById("game-wrapper").style.opacity = "1";
+  // document.getElementById("game-wrapper").style.display = "block";
+  // document.getElementById("game-wrapper").style.opacity = "0";
+
+
+  // show result screen
+  questions.push(new Question("2022/04/20"));
+  questions[0].answer = 3;
+  questions.push(new Question("2022/04/20"));
+  questions[1].answer = 1;
+  questions.push(new Question("2022/04/20"));
+  questions[2].answer = 3;
+  let resultTable = document.getElementById("result-table")
+  resultTable.innerHTML = `<tr>    
+  <th>Question Date</th>
+  <th>Your Answer</th>
+  <th>Result</th>
+  <th>Correct Answer</th>
+  </tr>`;
+  for(let i=0 ; i<questions.length ; i++)
+  {
+    console.log(i);
+    let ans = questions[i].answer == questions[i].getDay() ?  "&check;" : "&#9587" ;
+    let ansClass = questions[i].answer == questions[i].getDay() ?  "tick-symbol" : "cross-symbol";
+    resultTable.innerHTML += `<tr>    
+  <td>Question Date</td>
+  <td>Your Answer</td>
+  <td class="`+ ansClass+ `">`+ ans+`</td>
+  <td>Correct Answer</td>
+  </tr>`;
+;
+
+// cross code &#9587;  tick code : &check;
+  }
 }
-gameSetup(120 , 5);
+// gameSetup(5 , 5);
+endGame();
 
 

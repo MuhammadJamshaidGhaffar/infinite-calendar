@@ -1,0 +1,77 @@
+
+#result-wrapper{
+   
+    width: fit-content;
+    height: 80vh;
+    margin: auto;
+    transform: translateY(8rem);
+    transition: opacity 0.5s linear;
+  
+}
+#result-container{
+    background-color: black; 
+    border: 3px solid gray;
+    border-radius: 0.8rem;
+    padding-bottom: 4rem;
+    height: 100%;
+    width: 100%;
+    overflow: scroll;
+}
+
+table, th, td {
+    border: 1px solid rgb(255, 255, 255);
+    font-size: 2rem;
+    border-collapse: collapse;
+  }
+  th,td{
+    padding: 2rem;
+}
+th{
+    color: bisque;
+    background-color: brown;
+}
+
+/* ################ go back btn ##################  */
+#result-go-back-btn {
+    /* margin-top: 2rem;
+    margin-left: 16rem; */
+    position: absolute;
+    top:-5rem;
+    right: 0rem;
+    display: inline-block;
+    font-size: 16px;
+    padding: 1rem 3.3rem;
+    -webkit-transform: perspective(200px) rotateX(3deg);
+            transform: perspective(200px) rotateX(3deg);
+    color: white;
+    font-weight: 900;
+    border: none;
+    border-radius: 5px;
+    background: -webkit-gradient(linear, left bottom, left top, from(rgba(63,94,251,1)), to(rgba(70,135,252,1)));
+    background: linear-gradient(0deg, rgba(63,94,251,1) 0%, rgba(70,135,252,1) 100%);
+    -webkit-box-shadow: rgba(63,94,251,0.2) 0px 40px 29px 0px;
+            box-shadow: rgba(63,94,251,0.2) 0px 40px 29px 0px;
+    will-change: transform;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+    border-bottom: 2px solid rgba(70,135,252,1);
+   }
+   
+   #result-go-back-btn:hover {
+    -webkit-transform: perspective(180px) rotateX(8deg) translateY(2px);
+            transform: perspective(180px) rotateX(8deg) translateY(2px);
+   }
+   
+   #result-go-back-btn:active {
+    -webkit-transform: perspective(170px) rotateX(25deg) translateY(5px);
+            transform: perspective(170px) rotateX(25deg) translateY(5px);
+   }
+
+   /* ############# tick and cross Symbol ###############  */
+   .tick-symbol {
+    background-color: #00d300;
+    font-size: 4rem;
+   }
+   .cross-symbol{
+       background-color: red;
+   }
