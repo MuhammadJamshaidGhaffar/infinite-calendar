@@ -34,13 +34,24 @@ function createWeekDaysMapping()
     dayMappingArr[(startKey+i-1)%7] = i;
   }
 }
-
+function getFormattedDate(date)
+{
+  let formatDiv = document.getElementById("format-btn-value");
+  dateArr =  date.split("/");
+  switch(formatDiv.innerHTML)
+  {
+    case "DD/MM/YY" :
+      date = [dateArr[2] , dateArr[1] , dateArr[0]].join("/");
+    break;
+  }
+  return date;
+}
 
 // ################# UTILITY CLASSES ######################### 
 class Question {
   constructor(date)
   {
-    this.date = date;
+    this.date = getFormattedDate(date);
     this.day = new Date(date).getDay();
     this.answer = -1 ;
   }
@@ -87,6 +98,8 @@ async function gameStart(p_time , p_startKey){
   //show countdown and game block block
   document.getElementById("countdown-div").style.display = "flex";
   document.getElementById("game-wrapper").style.display = "block";
+  //Set game Timer
+  document.getElementById("live-timer-div").innerHTML = p_time;
   await delay(0.5);
   //change opacity of countdown and game block
   document.getElementById("countdown-div").style.opacity = "1";
@@ -101,7 +114,7 @@ async function gameStart(p_time , p_startKey){
   keyPressed = -1;
 
   createWeekDaysMapping();
-
+;
 //starting countdown
 document.getElementById("signal-red").style.backgroundColor = "black";
 document.getElementById("signal-yellow").style.backgroundColor = "black";
@@ -282,9 +295,13 @@ function checkTimerValue()
 }
 function gameStartWrapper ()
 {
+  // removing event listeners
     document.getElementById("start-btn").removeEventListener("click" , gameStartWrapper);
     document.getElementById("timer").removeEventListener('focusout' , checkTimerValue);
     document.getElementById("start-key-btn").removeEventListener("click" , changeStartKey);
+    document.getElementById("format-btn").removeEventListener("click" , changeFormat);
+
+    //starting game
     console.log("Timer is : " , getTime());
     console.log("Start Key is : " , getStartKey());
     gameStart(getTime(),getStartKey());
@@ -298,7 +315,17 @@ function changeStartKey(){
     value = 1;
   } 
   startKeyValueElm.innerHTML = value.toString();
-  
+}
+function changeFormat(){
+  let format = document.getElementById("format-btn-value");
+  if(format.innerHTML == "DD/MM/YY")
+    format.innerHTML = "MM/DD/YY";
+  else if(format.innerHTML == "MM/DD/YY")
+    format.innerHTML = "YY/MM/DD";
+  else if(format.innerHTML == "YY/MM/DD")
+    format.innerHTML = "YY/DD/MM";
+  else if(format.innerHTML == "YY/DD/MM")
+    format.innerHTML = "DD/MM/YY";
 }
   function getTime(){
     return parseInt(document.getElementById("timer").value);   
@@ -311,6 +338,8 @@ function changeStartKey(){
   document.getElementById("timer").addEventListener('focusout' , checkTimerValue);
   document.getElementById("start-btn").addEventListener("click" , gameStartWrapper);
   document.getElementById("start-key-btn").addEventListener("click" , changeStartKey);
+  document.getElementById("format-btn").addEventListener("click" , changeFormat);
+
 }
 
 // hide other menus
