@@ -56,11 +56,32 @@ class Question {
   {
     return this.answer;
   }
+  getDayStr(day){
+    switch(day)
+    {
+      case 0:
+        return "SU";
+      case 1:
+        return "MO";
+      case 2:
+        return "TU";
+      case 3:
+        return "WE";
+      case 4:
+        return "TH";
+      case 5:
+        return "FR";
+      case 6:
+        return "SA";
+    }
+  }
 }
 // ########################## GAME FUNCTIONS ##########################
 async function gameSetup(p_time , p_startKey){
-  // hide main menu
+  // hide other menus
   document.getElementById("main-wrapper").style.display = "none";
+  document.getElementById("result-wrapper").style.display = "none";
+  document.getElementById("result-wrapper").style.opacity = "0";
   //show countdown block
   document.getElementById("countdown-div").style.display = "flex";
   document.getElementById("countdown-div").style.opacity = "1";
@@ -110,6 +131,8 @@ timeIntervalId = setInterval(()=>{
       btns[i].removeEventListener("mousedown" , btnDownFuncs[i]) ;  
       btns[i].removeEventListener("mouseup" , btnUpFuncs[i]) ; 
     }
+    console.log(typeof(questions))
+    questions.pop();
     endGame();
   }
 } , 1000)
@@ -178,22 +201,28 @@ timeIntervalId = setInterval(()=>{
 
 
 // ------------- End Game ------------------
-function endGame()
+async function endGame()
 {
   
   //hide game menu 
-  // document.getElementById("game-wrapper").style.display = "block";
-  // document.getElementById("game-wrapper").style.opacity = "0";
-
-
+  document.getElementById("game-wrapper").style.opacity = "0";
+  await delay(0.5);
+  document.getElementById("game-wrapper").style.display = "none";
   // show result screen
-  questions.push(new Question("2022/04/20"));
-  questions[0].answer = 3;
-  questions.push(new Question("2022/04/20"));
-  questions[1].answer = 1;
-  questions.push(new Question("2022/04/20"));
-  questions[2].answer = 3;
-  let resultTable = document.getElementById("result-table")
+  document.getElementById("result-wrapper").style.display = "block";
+  await delay(0.1);
+  document.getElementById("result-wrapper").style.opacity = "1";
+  
+
+  // questions.push(new Question("2022/04/20"));
+  // questions[0].answer = 3;
+  // questions.push(new Question("2022/04/20"));
+  // questions[1].answer = 1;
+  // questions.push(new Question("2022/04/20"));
+  // questions[2].answer = 3;
+
+  //  Show result
+  let resultTable = document.getElementById("result-table");
   resultTable.innerHTML = `<tr>    
   <th>Question Date</th>
   <th>Your Answer</th>
@@ -206,17 +235,16 @@ function endGame()
     let ans = questions[i].answer == questions[i].getDay() ?  "&check;" : "&#9587" ;
     let ansClass = questions[i].answer == questions[i].getDay() ?  "tick-symbol" : "cross-symbol";
     resultTable.innerHTML += `<tr>    
-  <td>Question Date</td>
-  <td>Your Answer</td>
+  <td>`+questions[i].getDate()+`</td>
+  <td>`+questions[i].getDayStr(questions[i].getAnswer()) +`</td>
   <td class="`+ ansClass+ `">`+ ans+`</td>
-  <td>Correct Answer</td>
+  <td>`+questions[i].getDayStr(questions[i].getDay())+`</td>
   </tr>`;
 ;
 
 // cross code &#9587;  tick code : &check;
   }
 }
-// gameSetup(5 , 5);
-endGame();
+ gameSetup(3 , 5);
 
 
