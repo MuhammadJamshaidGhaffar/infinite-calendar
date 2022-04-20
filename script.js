@@ -96,12 +96,12 @@ let timeIntervalId = 0;
 timeIntervalId = setInterval(()=>{
   timer--;
   document.getElementById("live-timer-div").innerHTML = timer;
-  if(timer < 0)
+  if(timer < 60)
   {
     clearInterval(timeIntervalId);
     // remove event Listeners
-  document.removeEventListener("keydown", keyPressFunc );
-  document.addEventListener("keyup" , btnUp) ;
+  document.removeEventListener("keydown", keyDownFunc );
+  document.addEventListener("keyup" , btnUpFunc) ;
     let btns =document.getElementsByClassName("btn");
     for(let i=0 ; i < 7 ; i++)
     {
@@ -116,8 +116,9 @@ timeIntervalId = setInterval(()=>{
 
   // FUNCTION WHEN BUTTON IS PRESSED 
   function btnPress(btn){
-    if(btn != keyPressed && btn >= 1 && btn <= 7)
+    if(btn != keyPressed && btn >= 1 && btn <= 7 &keyPressed == -1)
     {
+      document.getElementById("btn-"+btn).style.transform = "scale(0.8)";
       keyPressed = btn;
       questions[questions.length - 1 ].answer = dayMappingArr[btn%7] ;
       console.log("btn Pressed" , btn);
@@ -125,31 +126,44 @@ timeIntervalId = setInterval(()=>{
       updateQuestion();
     }
   }
-
+  function btnUp(btn)
+  {
+    if(btn == keyPressed && btn >= 1 && btn <= 7)
+    {
+      console.log(btn , "  Btn Up")
+      document.getElementById("btn-"+btn).style.transform = "scale(1)";
+      keyPressed = -1;
+    }
+    
+  }
 
   // add event listeners
-  function keyPressFunc (event){
+  function keyDownFunc (event){
     console.log("key pressed");
     console.log(parseInt(event.key));
     btnPress(parseInt(event.key));
   }
-  function btnUp()
-  {
-    keyPressed = -1;
+  function keyUpFunc (event){
+    btnUp(parseInt(event.key));
   }
-  document.addEventListener("keydown" , keyPressFunc) ;
-  document.addEventListener("keyup" , btnUp) ;
+  
+  document.addEventListener("keydown" , keyDownFunc) ;
+  document.addEventListener("keyup" , keyUpFunc) ;
   startKey = "4";
   let btns =document.getElementsByClassName("btn");
-  let btnFuncs = [];
+  let btnDownFuncs = [];
+  let btnUpFuncs = [];
   for(let i=0 ; i < 7 ; i++)
   {
     console.log(i+1)
-    btnFuncs.push(()=>{
+    btnDownFuncs.push(()=>{
       btnPress(i+1);
     });
-    btns[i].addEventListener("mousedown" , btnFuncs[i]) ;    
-    btns[i].addEventListener("mouseup" , btnUp) ;    
+    btnUpFuncs.push( ()=>{
+      btnUp(i+1)
+    });
+    btns[i].addEventListener("mousedown" , btnDownFuncs[i]) ;    
+    btns[i].addEventListener("mouseup" , btnUpFuncs[i]) ;    
   }
 
 // Adding and Displaying random date
