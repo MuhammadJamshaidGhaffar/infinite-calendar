@@ -7,7 +7,7 @@ let timer = 0 ;
 let startKey = 1;
 let keyPressed = -1;
 
-
+let dayMappingArr = Array(7);
 
 // ######################## UTILITY FUNCTIONS ########################
 function getRndInteger(min, max) {
@@ -26,6 +26,15 @@ function delay(n){
       setTimeout(resolve,n*1000);
   });
 }
+function createWeekDaysMapping()
+{
+  
+  for(let i=0 ; i < 7 ; i++)
+  {
+    dayMappingArr[(startKey+i-1)%7] = i;
+  }
+}
+
 
 // ################# UTILITY CLASSES ######################### 
 class Question {
@@ -66,6 +75,8 @@ async function gameSetup(p_time , p_startKey){
   startKey = p_startKey;
   keyPressed = -1;
 
+  createWeekDaysMapping();
+
 //starting countdown
 document.getElementById("signal-red").style.backgroundColor = "black";
 document.getElementById("signal-yellow").style.backgroundColor = "black";
@@ -85,7 +96,7 @@ let timeIntervalId = 0;
 timeIntervalId = setInterval(()=>{
   timer--;
   document.getElementById("live-timer-div").innerHTML = timer;
-  if(timer < 116)
+  if(timer < 0)
   {
     clearInterval(timeIntervalId);
     // remove event Listeners
@@ -105,10 +116,12 @@ timeIntervalId = setInterval(()=>{
 
   // FUNCTION WHEN BUTTON IS PRESSED 
   function btnPress(btn){
-    if(btn != keyPressed && (btn >= 1 || btn <= 7))
+    if(btn != keyPressed && btn >= 1 && btn <= 7)
     {
       keyPressed = btn;
-      questions[questions.length - 1 ].answer = btn ;
+      questions[questions.length - 1 ].answer = dayMappingArr[btn%7] ;
+      console.log("btn Pressed" , btn);
+      console.log("Date entered  : " , dayMappingArr[btn%7]);
       updateQuestion();
     }
   }
@@ -159,6 +172,6 @@ function endGame()
   document.getElementById("game-wrapper").style.display = "block";
   document.getElementById("game-wrapper").style.opacity = "1";
 }
-gameSetup(120 , 1);
+gameSetup(120 , 5);
 
 
