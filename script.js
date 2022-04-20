@@ -257,28 +257,60 @@ async function endGame()
 async function mainMenu(){
   // Removing go back btn event listener
   document.getElementById("result-go-back-btn").removeEventListener('click' , mainMenu);
-  //hide result menu 
+  //hide result menu  --------------------------------
   document.getElementById("result-wrapper").style.opacity = "0";
   await delay(0.5);
   document.getElementById("result-wrapper").style.display = "none";
-  // show main Menu
+  // show main Menu -----------------
   document.getElementById("main-wrapper").style.display = "block";
   await delay(0.3);
   document.getElementById("main-wrapper").style.opacity = "1";
 
-//Main Menu Functions
+//Main Menu Functions -----------------------------
 function checkTimerValue()
 {
-  console.log("time changed");
+  console.log("Check timer executed");
+  let timeDiv = document.getElementById("timer");
+  if (timeDiv.value < 30){
+    timeDiv.value = "30";
+  }
+  else if(timeDiv.value > 120 || isNaN(timeDiv.value))
+  {
+    timeDiv.value = "120";
+  }
   
 }
-  // add event listeners
-  document.getElementById("timer").addEventListener("change" , checkTimerValue);
-  function gameStartWrapper (){
+function gameStartWrapper ()
+{
     document.getElementById("start-btn").removeEventListener("click" , gameStartWrapper);
-    gameStart(3,1);
+    document.getElementById("timer").removeEventListener('focusout' , checkTimerValue);
+    document.getElementById("start-key-btn").removeEventListener("click" , changeStartKey);
+    console.log("Timer is : " , getTime());
+    console.log("Start Key is : " , getStartKey());
+    gameStart(getTime(),getStartKey());
   }
+function changeStartKey(){
+  console.log("changestartkey() executed");
+  let startKeyValueElm = document.getElementById("start-key-value");
+  let value = parseInt(startKeyValueElm.innerHTML);
+  value++;
+  if (value == 8){
+    value = 1;
+  } 
+  startKeyValueElm.innerHTML = value.toString();
+  
+}
+  function getTime(){
+    return parseInt(document.getElementById("timer").value);   
+  }
+  function getStartKey(){
+    return parseInt(document.getElementById("start-key-value").innerText);
+  }
+ 
+  // add event listeners ----------------------------------------------
+  document.getElementById("timer").addEventListener('focusout' , checkTimerValue);
   document.getElementById("start-btn").addEventListener("click" , gameStartWrapper);
+  document.getElementById("start-key-btn").addEventListener("click" , changeStartKey);
 }
 
 // hide other menus
