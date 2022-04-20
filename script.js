@@ -77,17 +77,21 @@ class Question {
   }
 }
 // ########################## GAME FUNCTIONS ##########################
-async function gameSetup(p_time , p_startKey){
-  // hide other menus
+async function gameStart(p_time , p_startKey){
+  
+//hide main menu
+  document.getElementById("main-wrapper").style.opacity = "0";
+  await delay(1);
   document.getElementById("main-wrapper").style.display = "none";
-  document.getElementById("result-wrapper").style.display = "none";
-  document.getElementById("result-wrapper").style.opacity = "0";
-  //show countdown block
+  
+  //show countdown and game block block
   document.getElementById("countdown-div").style.display = "flex";
-  document.getElementById("countdown-div").style.opacity = "1";
-  //display game menu 
   document.getElementById("game-wrapper").style.display = "block";
+  await delay(0.5);
+  //change opacity of countdown and game block
+  document.getElementById("countdown-div").style.opacity = "1";
   document.getElementById("game-wrapper").style.opacity = "1";
+  await delay(1.5);
 
   // reset variables 
   questions = [];
@@ -244,7 +248,45 @@ async function endGame()
 
 // cross code &#9587;  tick code : &check;
   }
+
+  // Adding go back btn event listener
+  document.getElementById("result-go-back-btn").addEventListener('click' , mainMenu);
 }
- gameSetup(3 , 5);
+
+//-------------------- Main Menu ----------------------
+async function mainMenu(){
+  // Removing go back btn event listener
+  document.getElementById("result-go-back-btn").removeEventListener('click' , mainMenu);
+  //hide result menu 
+  document.getElementById("result-wrapper").style.opacity = "0";
+  await delay(0.5);
+  document.getElementById("result-wrapper").style.display = "none";
+  // show main Menu
+  document.getElementById("main-wrapper").style.display = "block";
+  await delay(0.3);
+  document.getElementById("main-wrapper").style.opacity = "1";
+
+//Main Menu Functions
+function checkTimerValue()
+{
+  console.log("time changed");
+  
+}
+  // add event listeners
+  document.getElementById("timer").addEventListener("change" , checkTimerValue);
+  function gameStartWrapper (){
+    document.getElementById("start-btn").removeEventListener("click" , gameStartWrapper);
+    gameStart(3,1);
+  }
+  document.getElementById("start-btn").addEventListener("click" , gameStartWrapper);
+}
+
+// hide other menus
+document.getElementById("result-wrapper").style.display = "none";
+document.getElementById("result-wrapper").style.opacity = "0";
+document.getElementById("game-wrapper").style.display = "none";
+document.getElementById("game-wrapper").style.opacity = "0";
+
+mainMenu();
 
 
