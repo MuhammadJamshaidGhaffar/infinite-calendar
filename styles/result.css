@@ -1,5 +1,5 @@
 
-#result-wrapper{
+#result-wrapper , #high-score-wrapper{
    
     width: fit-content;
     height: 80vh;
@@ -9,7 +9,7 @@
     overflow: hidden;
   
 }
-#result-container{
+#result-container , #high-score-container{
     background-color: black; 
     border: 3px solid gray;
     border-radius: 0.8rem;
@@ -32,12 +32,12 @@ th{
     background-color: brown;
 }
 
-#table-heading {
+#table-heading , #high-score-table-heading {
     position: sticky;
     top: 0;
 }
  /* ############## stat-go-back-wrapper ###########  */
- #stat-go-back-wrapper{
+ #stat-go-back-wrapper , #high-score-go-back-wrapper{
      display: flex;
      justify-content: space-between;
      /* position: absolute;
@@ -47,7 +47,7 @@ th{
 
 
 /* ################ go back btn ##################  */
-#result-go-back-btn {
+#result-go-back-btn , #high-score-go-back-btn {
     /* margin-top: 2rem;
     margin-left: 16rem; */
     /* position: absolute;
@@ -73,12 +73,12 @@ th{
     border-bottom: 2px solid rgba(70,135,252,1);
    }
    
-   #result-go-back-btn:hover {
+   #result-go-back-btn:hover , #high-score-go-back-btn:hover {
     -webkit-transform: perspective(180px) rotateX(8deg) translateY(2px);
             transform: perspective(180px) rotateX(8deg) translateY(2px);
    }
    
-   #result-go-back-btn:active {
+   #result-go-back-btn:active , #high-score-go-back-btn:active {
     -webkit-transform: perspective(170px) rotateX(25deg) translateY(5px);
             transform: perspective(170px) rotateX(25deg) translateY(5px);
    }
@@ -93,13 +93,19 @@ th{
    }
 
    /* ################## STATS DIV #########################  */
-   #stats-div{
+   #stats-div {
        /* position: absolute;
        top: -5rem;
        left:0rem; */
        display: flex;
        width: 60%;
        flex-wrap: wrap;
+   }
+   #message-div{
+    width: 60%;
+    font-size: 2.5rem;
+    /* color: bisque;
+    color: aqua; */
    }
    .stat-item{
        font-size: 3rem;

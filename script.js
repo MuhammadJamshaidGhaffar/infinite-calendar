@@ -34,26 +34,7 @@ function createWeekDaysMapping()
     dayMappingArr[(startKey+i-1)%7] = i;
   }
 }
-function setCookie(cName , cValue  , cExDays){
-  let d = new Date();
-  d.setTime(d.getTime() + (cExDays*24*60*60*1000));
-  let cookieStr = `${cName}=${cValue}; expires=${d.toUTCString()}; path=/`;
-  document.cookie = cookieStr;
-  console.log("cookie set to : " , cookieStr )
-}
-function getCookie(cName){
-  let decodedCookie = decodeURIComponent(document.cookie);
-  let cookieArr = decodedCookie.split("; ");
-  for(let i=0; i < cookieArr.length ; i++)
-  {
-    cookie = cookieArr[i].split("=");
-    if(cName == cookie[0])
-    {
-      return cookie[1];
-    }
-  }
-  return -1;
-}
+
 function getFormattedDate(year, month , day)
 {
   let formatDiv = document.getElementById("format-btn-value");
@@ -97,6 +78,72 @@ function displayStats(statsObj)
   document.getAnimations("correct-attempt-div").innerHTML = "Correct : " + statsObj['correctAnswers'];
   document.getElementById("wrong-attempt-div").innerHTML = "Wrong : " + statsObj['wrongAnswers'];
   document.getElementById("accuracy-div").innerHTML = "Accuracy = " + statsObj['accuracy'] + "%";
+}
+async function showHighScore(){
+  console.log("called");
+  // removing event listeners
+  document.getElementById("start-btn").removeEventListener("click" , gameStartWrapper);
+  document.getElementById("timer").removeEventListener('focusout' , checkTimerValue);
+  document.getElementById("start-key-btn").removeEventListener("click" , changeStartKey);
+  document.getElementById("format-btn").removeEventListener("click" , changeFormat);
+  document.getElementById("high-score-btn").removeEventListener("click" , showHighScore);
+  //hide main menu  --------------------------------
+  document.getElementById("main-wrapper").style.opacity = "0";
+  await delay(0.5);
+  document.getElementById("main-wrapper").style.display = "none";
+  // show HIGH score Table ----------------
+  document.getElementById("high-score-wrapper-wrapper").style.display = "block";
+  await delay(0.3);
+  document.getElementById("high-score-wrapper-wrapper").style.opacity = "1";
+
+  //-----------------------------------------------------------------
+  let resultArr = [getCookie("c1") , getCookie("c2") , getCookie("c3") , getCookie("c4") , getCookie("c5")];
+  let HighScoreTable = document.getElementById("high-score-table");
+  HighScoreTable.innerHTML = `<tr id="high-score-table-heading">   
+  <th>sr#</th> 
+  <th >Name</th>
+  <th>Score</th>
+  <th>Accuracy</th>
+  <th>Date</th>
+</tr>`;
+  for (let i=0; i< resultArr.length ; i++)
+  {
+    let  resultItemArr = resultArr[i].split(",");
+    console.log(resultItemArr);
+    let name = resultItemArr[0].split(":")[1];
+    let score = resultItemArr[1].split(":")[1];
+    let accuracy = resultItemArr[2].split(":")[1];
+    let date = resultItemArr[3].split(":")[1];
+    HighScoreTable.innerHTML += `<tr id="high-score-table-heading">   
+    <th>${(i+1)}</th> 
+    <th >${name}</th>
+    <th>${score}</th>
+    <th>${accuracy}%</th>
+    <th>${date}</th>
+</tr>`
+  }
+}
+//---------- cookies functions ---------------------
+// "Name:M.Jamshaid,Score:23,Accuracy:90,Date:34234234"
+function setCookie(cName , cValue  , cExDays){
+  let d = new Date();
+  d.setTime(d.getTime() + (cExDays*24*60*60*1000));
+  let cookieStr = `${cName}=${cValue}; expires=${d.toUTCString()}; path=/`;
+  document.cookie = cookieStr;
+  console.log("cookie set to : " , cookieStr )
+}
+function getCookie(cName){
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let cookieArr = decodedCookie.split("; ");
+  for(let i=0; i < cookieArr.length ; i++)
+  {
+    cookie = cookieArr[i].split("=");
+    if(cName == cookie[0])
+    {
+      return cookie[1];
+    }
+  }
+  return "";
 }
 // ################# UTILITY CLASSES ######################### 
 class Question {
@@ -360,6 +407,7 @@ function gameStartWrapper ()
     document.getElementById("timer").removeEventListener('focusout' , checkTimerValue);
     document.getElementById("start-key-btn").removeEventListener("click" , changeStartKey);
     document.getElementById("format-btn").removeEventListener("click" , changeFormat);
+    document.getElementById("high-score-btn").removeEventListener("click" , showHighScore);
 
     //starting game
     console.log("Timer is : " , getTime());
@@ -399,6 +447,7 @@ function changeFormat(){
   document.getElementById("start-btn").addEventListener("click" , gameStartWrapper);
   document.getElementById("start-key-btn").addEventListener("click" , changeStartKey);
   document.getElementById("format-btn").addEventListener("click" , changeFormat);
+  document.getElementById("high-score-btn").addEventListener("click" , showHighScore);
 
 }
 
@@ -407,6 +456,8 @@ document.getElementById("result-wrapper").style.display = "none";
 document.getElementById("result-wrapper").style.opacity = "0";
 document.getElementById("game-wrapper").style.display = "none";
 document.getElementById("game-wrapper").style.opacity = "0";
+document.getElementById("high-score-wrapper").style.display = "none";
+document.getElementById("high-score-wrapper").style.opacity = "0";
 
 mainMenu();
 
