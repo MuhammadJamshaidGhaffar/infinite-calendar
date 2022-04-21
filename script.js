@@ -53,7 +53,31 @@ function getFormattedDate(year, month , day)
       return [year , day , month].join("/");
   }
 }
-
+function calculateStats()
+{
+  let correctAnswers = 0;
+  let wrongAnswers = 0;
+  for(let i=0; i< attempted ; i++)
+  {
+    if (questions[i].getAnswer() == questions[i].getDay())
+    {
+      correctAnswers++;
+    }
+    else{
+      wrongAnswers++;
+    }
+  }
+  let accuracy = (correctAnswers / attempted * 100).toFixed(2) ;
+  return {"correctAnswers":correctAnswers , "wrongAnswers" : wrongAnswers , "accuracy" : accuracy};
+}
+function displayStats(statsObj)
+{
+  
+  document.getElementById("attempted-div").innerHTML = "Attempted : " + attempted ;
+  document.getAnimations("correct-attempt-div").innerHTML = "Correct : " + statsObj['correctAnswers'];
+  document.getElementById("wrong-attempt-div").innerHTML = "Wrong : " + statsObj['wrongAnswers'];
+  document.getElementById("accuracy-div").innerHTML = "Accuracy = " + statsObj['accuracy'] + "%";
+}
 // ################# UTILITY CLASSES ######################### 
 class Question {
   constructor(date)
@@ -250,17 +274,12 @@ async function endGame()
   await delay(0.1);
   document.getElementById("result-wrapper").style.opacity = "1";
   
-
-  // questions.push(new Question("2022/04/20"));
-  // questions[0].answer = 3;
-  // questions.push(new Question("2022/04/20"));
-  // questions[1].answer = 1;
-  // questions.push(new Question("2022/04/20"));
-  // questions[2].answer = 3;
-
+  //show stats 
+  displayStats(calculateStats());
   //  Show result
   let resultTable = document.getElementById("result-table");
-  resultTable.innerHTML = `<tr>    
+  resultTable.innerHTML = `<tr id="table-heading"> 
+  <th>sr#</th>   
   <th>Question Date</th>
   <th>Your Answer</th>
   <th>Result</th>
@@ -271,7 +290,8 @@ async function endGame()
     console.log(i);
     let ans = questions[i].answer == questions[i].getDay() ?  "&check;" : "&#9587" ;
     let ansClass = questions[i].answer == questions[i].getDay() ?  "tick-symbol" : "cross-symbol";
-    resultTable.innerHTML += `<tr>    
+    resultTable.innerHTML += `<tr>
+    <td>`+(i+1)+`</td>    
   <td>`+questions[i].getDate()+`</td>
   <td>`+questions[i].getDayStr(questions[i].getAnswer()) +`</td>
   <td class="`+ ansClass+ `">`+ ans+`</td>

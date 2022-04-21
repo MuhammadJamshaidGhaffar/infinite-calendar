@@ -6,15 +6,16 @@
     margin: auto;
     transform: translateY(8rem);
     transition: opacity 2s linear;
+    overflow: hidden;
   
 }
 #result-container{
     background-color: black; 
     border: 3px solid gray;
     border-radius: 0.8rem;
-    padding-bottom: 4rem;
+    padding-bottom: 12rem;
     height: 100%;
-    width: 100%;
+    width: fit-content;
     overflow: scroll;
 }
 
@@ -29,6 +30,11 @@ table, th, td {
 th{
     color: bisque;
     background-color: brown;
+}
+
+#table-heading {
+    position: sticky;
+    top: 0;
 }
  /* ############## stat-go-back-wrapper ###########  */
  #stat-go-back-wrapper{
