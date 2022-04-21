@@ -34,6 +34,26 @@ function createWeekDaysMapping()
     dayMappingArr[(startKey+i-1)%7] = i;
   }
 }
+function setCookie(cName , cValue  , cExDays){
+  let d = new Date();
+  d.setTime(d.getTime() + (cExDays*24*60*60*1000));
+  let cookieStr = `${cName}=${cValue}; expires=${d.toUTCString()}; path=/`;
+  document.cookie = cookieStr;
+  console.log("cookie set to : " , cookieStr )
+}
+function getCookie(cName){
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let cookieArr = decodedCookie.split("; ");
+  for(let i=0; i < cookieArr.length ; i++)
+  {
+    cookie = cookieArr[i].split("=");
+    if(cName == cookie[0])
+    {
+      return cookie[1];
+    }
+  }
+  return -1;
+}
 function getFormattedDate(year, month , day)
 {
   let formatDiv = document.getElementById("format-btn-value");

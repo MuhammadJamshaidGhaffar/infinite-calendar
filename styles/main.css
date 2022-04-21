@@ -159,6 +159,40 @@ h1{
     margin-left:5rem ;
 }
 
+/* ######################## HIGH SCORE BTN ###################  */
+#high-score-btn {
+    margin-top: 2rem;
+    display: inline-block;
+    font-size: 16px;
+    padding: 1rem 3.3rem;
+    -webkit-transform: perspective(200px) rotateX(3deg);
+            transform: perspective(200px) rotateX(3deg);
+    color: white;
+    font-weight: 900;
+    border: none;
+    border-radius: 5px;
+    background: -webkit-gradient(linear, left bottom, left top, from(rgba(63,94,251,1)), to(rgba(70,135,252,1)));
+    background: linear-gradient(0deg, rgba(63,94,251,1) 0%, rgba(70,135,252,1) 100%);
+    -webkit-box-shadow: rgba(63,94,251,0.2) 0px 40px 29px 0px;
+            box-shadow: rgba(63,94,251,0.2) 0px 40px 29px 0px;
+    will-change: transform;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+    border-bottom: 2px solid rgba(70,135,252,1);
+   }
+   
+   #high-score-btn:hover {
+    -webkit-transform: perspective(180px) rotateX(8deg) translateY(2px);
+            transform: perspective(180px) rotateX(8deg) translateY(2px);
+   }
+   
+   #high-score-btn:active {
+    -webkit-transform: perspective(170px) rotateX(25deg) translateY(5px);
+            transform: perspective(170px) rotateX(25deg) translateY(5px);
+   }
+
+
+
 /* ############## START BUTTON STYLING ###############  */
 .start-btn {
     margin-top: 2rem;
