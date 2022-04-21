@@ -69,32 +69,29 @@ function calculateStats()
     }
   }
   let accuracy = (correctAnswers / attempted * 100).toFixed(2) ;
+  if(isNaN(accuracy))
+    accuracy = "0.00";
   return {"correctAnswers":correctAnswers , "wrongAnswers" : wrongAnswers , "accuracy" : accuracy};
 }
 function displayStats(statsObj)
 {
   
   document.getElementById("attempted-div").innerHTML = "Attempted : " + attempted ;
-  document.getAnimations("correct-attempt-div").innerHTML = "Correct : " + statsObj['correctAnswers'];
+  document.getElementById("correct-attempt-div").innerHTML = "Correct : " + statsObj['correctAnswers'];
   document.getElementById("wrong-attempt-div").innerHTML = "Wrong : " + statsObj['wrongAnswers'];
   document.getElementById("accuracy-div").innerHTML = "Accuracy = " + statsObj['accuracy'] + "%";
 }
-async function showHighScore(){
+async function showHighScore(p_stats=null , p_recordBreakPos=6){
   console.log("called");
-  // removing event listeners
-  document.getElementById("start-btn").removeEventListener("click" , gameStartWrapper);
-  document.getElementById("timer").removeEventListener('focusout' , checkTimerValue);
-  document.getElementById("start-key-btn").removeEventListener("click" , changeStartKey);
-  document.getElementById("format-btn").removeEventListener("click" , changeFormat);
-  document.getElementById("high-score-btn").removeEventListener("click" , showHighScore);
+  
   //hide main menu  --------------------------------
   document.getElementById("main-wrapper").style.opacity = "0";
   await delay(0.5);
   document.getElementById("main-wrapper").style.display = "none";
   // show HIGH score Table ----------------
-  document.getElementById("high-score-wrapper-wrapper").style.display = "block";
+  document.getElementById("high-score-wrapper").style.display = "block";
   await delay(0.3);
-  document.getElementById("high-score-wrapper-wrapper").style.opacity = "1";
+  document.getElementById("high-score-wrapper").style.opacity = "1";
 
   //-----------------------------------------------------------------
   let resultArr = [getCookie("c1") , getCookie("c2") , getCookie("c3") , getCookie("c4") , getCookie("c5")];
@@ -106,25 +103,61 @@ async function showHighScore(){
   <th>Accuracy</th>
   <th>Date</th>
 </tr>`;
-  for (let i=0; i< resultArr.length ; i++)
+  for (let i=0; i< (p_recordBreakPos-1) ; i++)
   {
+    showScoreOnDiv(i);
+  }
+  
+  function showScoreOnDiv(i , add=0){
     let  resultItemArr = resultArr[i].split(",");
     console.log(resultItemArr);
     let name = resultItemArr[0].split(":")[1];
     let score = resultItemArr[1].split(":")[1];
     let accuracy = resultItemArr[2].split(":")[1];
     let date = resultItemArr[3].split(":")[1];
-    HighScoreTable.innerHTML += `<tr id="high-score-table-heading">   
-    <th>${(i+1)}</th> 
+    HighScoreTable.innerHTML += `<tr">   
+    <th>${(i+1+add)}</th> 
     <th >${name}</th>
     <th>${score}</th>
     <th>${accuracy}%</th>
     <th>${date}</th>
 </tr>`
   }
+  addNewScore(p_recordBreakPos);
+  for(let i=(p_recordBreakPos-1); i<4 ; i++)
+  {
+    showScoreOnDiv(i+1);
+  }
+  if(p_stats != null)
+  {
+    document.getElementById("high-score-go-back-btn").innerHTML = "Save";
+  }
+  function addNewScore(pos){
+    let date = new Date();
+    date =date.toDateString();
+    HighScoreTable.innerHTML += `<tr">   
+    <th>${pos}</th> 
+    <th id="enter-name-td"><input type="text" name="" id="enter-name-field" placeholder="Enter Name"></th>
+    <th>${p_stats['correctAnswers']}</th>
+    <th>${p_stats['accuracy']}%</th>
+    <th>${date}</th>
+</tr>`
+document.getElementById("enter-name-field").focus();
+  }
+  
+  
+  // add go back btn event listener
+  document.getElementById("high-score-go-back-btn").addEventListener("click" , goBack );
+  async function goBack(){
+    document.getElementById("high-score-go-back-btn").removeEventListener("click" , goBack );
+    document.getElementById("high-score-wrapper").style.opacity = "0";
+    await delay(0.3);
+    document.getElementById("high-score-wrapper").style.display = "none";
+    mainMenu();
+  }
 }
 //---------- cookies functions ---------------------
-// "Name:M.Jamshaid,Score:23,Accuracy:90,Date:34234234"
+// "Name:M.Jamshaid,Score:23,Accuracy:90,Date:Thu Apr 21 2022"
 function setCookie(cName , cValue  , cExDays){
   let d = new Date();
   d.setTime(d.getTime() + (cExDays*24*60*60*1000));
@@ -144,6 +177,28 @@ function getCookie(cName){
     }
   }
   return "";
+}
+function checkRecordBreak(score)
+{
+  let lastScore = getCookie("c5").split(",");
+  lastScore = lastScore[1].split(":");
+  lastScore = parseInt(lastScore[1]);
+  if (score < lastScore)
+    return false;
+  else
+    return true;
+}
+function getPosOfRecordBreak(p_score){
+  let resultArr = [getCookie("c1") , getCookie("c2") , getCookie("c3") , getCookie("c4") , getCookie("c5")];
+  for(let i=4; i >= 0; i--){
+    let  resultItemArr = resultArr[i].split(",");
+    let score = resultItemArr[1].split(":")[1];
+    if (p_score > score)
+      continue;
+    else{
+      return i+2;
+    }
+  }
 }
 // ################# UTILITY CLASSES ######################### 
 class Question {
@@ -190,7 +245,7 @@ async function gameStart(p_time , p_startKey){
   
 //hide main menu
   document.getElementById("main-wrapper").style.opacity = "0";
-  await delay(1);
+  await delay(0.1);
   document.getElementById("main-wrapper").style.display = "none";
   
   //show countdown and game block block
@@ -342,7 +397,8 @@ async function endGame()
   document.getElementById("result-wrapper").style.opacity = "1";
   
   //show stats 
-  displayStats(calculateStats());
+  let stats = calculateStats(); 
+  displayStats(stats);
   //  Show result
   let resultTable = document.getElementById("result-table");
   resultTable.innerHTML = `<tr id="table-heading"> 
@@ -370,17 +426,31 @@ async function endGame()
   }
 
   // Adding go back btn event listener
-  document.getElementById("result-go-back-btn").addEventListener('click' , mainMenu);
+  document.getElementById("result-go-back-btn").addEventListener('click' , goBack);
+  async function goBack(){
+    // Removing go back btn event listener
+    document.getElementById("result-go-back-btn").removeEventListener('click' , goBack);
+    //hide result menu  --------------------------------
+    document.getElementById("result-wrapper").style.opacity = "0";
+    await delay(0.5);
+    document.getElementById("result-wrapper").style.display = "none";
+    
+    //----------------- Check for high Score and record break ------------
+    if(checkRecordBreak(stats.correctAnswers))
+    {
+      let recordBreakPos = recordBreakPos(stats.correctAnswers);
+      showHighScore(stats.correctAnswers ,recordBreakPos);   // if record breaks show high score panel and enter his/her name
+    }
+    else{
+      mainMenu();
+    }
+    
+  }
 }
 
 //-------------------- Main Menu ----------------------
 async function mainMenu(){
-  // Removing go back btn event listener
-  document.getElementById("result-go-back-btn").removeEventListener('click' , mainMenu);
-  //hide result menu  --------------------------------
-  document.getElementById("result-wrapper").style.opacity = "0";
-  await delay(0.5);
-  document.getElementById("result-wrapper").style.display = "none";
+  
   // show main Menu -----------------
   document.getElementById("main-wrapper").style.display = "block";
   await delay(0.3);
@@ -407,7 +477,7 @@ function gameStartWrapper ()
     document.getElementById("timer").removeEventListener('focusout' , checkTimerValue);
     document.getElementById("start-key-btn").removeEventListener("click" , changeStartKey);
     document.getElementById("format-btn").removeEventListener("click" , changeFormat);
-    document.getElementById("high-score-btn").removeEventListener("click" , showHighScore);
+    document.getElementById("high-score-btn").removeEventListener("click" , showHighScoreWrapper);
 
     //starting game
     console.log("Timer is : " , getTime());
@@ -441,13 +511,23 @@ function changeFormat(){
   function getStartKey(){
     return parseInt(document.getElementById("start-key-value").innerText);
   }
- 
+ function showHighScoreWrapper()
+ {
+   // removing event listeners
+  document.getElementById("start-btn").removeEventListener("click" , gameStartWrapper);
+  document.getElementById("timer").removeEventListener('focusout' , checkTimerValue);
+  document.getElementById("start-key-btn").removeEventListener("click" , changeStartKey);
+  document.getElementById("format-btn").removeEventListener("click" , changeFormat);
+  document.getElementById("high-score-btn").removeEventListener("click" , showHighScore);
+
+  showHighScore();
+ }
   // add event listeners ----------------------------------------------
   document.getElementById("timer").addEventListener('focusout' , checkTimerValue);
   document.getElementById("start-btn").addEventListener("click" , gameStartWrapper);
   document.getElementById("start-key-btn").addEventListener("click" , changeStartKey);
   document.getElementById("format-btn").addEventListener("click" , changeFormat);
-  document.getElementById("high-score-btn").addEventListener("click" , showHighScore);
+  document.getElementById("high-score-btn").addEventListener("click" , showHighScoreWrapper);
 
 }
 

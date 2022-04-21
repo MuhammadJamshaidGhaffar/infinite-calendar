@@ -124,3 +124,16 @@ th{
    #accuracy-div{
     color: aqua;
    }
+
+   /* ############## editable name field ################  */
+   #enter-name-td{
+       padding: 0rem;
+   }
+   #enter-name-field{
+        background: none;
+        border: none;
+        outline: none;
+        color: bisque;
+        font-size: 2rem;
+        width: 14rem;
+   }
