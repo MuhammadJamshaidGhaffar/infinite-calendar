@@ -2,7 +2,7 @@
 // ########################### VARIABLES #############################
 
 let questions = [];
-let counter = 0;
+let attempted = 0;
 let timer = 0 ;
 let startKey = 1;
 let keyPressed = -1;
@@ -34,24 +34,31 @@ function createWeekDaysMapping()
     dayMappingArr[(startKey+i-1)%7] = i;
   }
 }
-function getFormattedDate(date)
+function getFormattedDate(year, month , day)
 {
   let formatDiv = document.getElementById("format-btn-value");
-  dateArr =  date.split("/");
+  console.log("In getFormattedDate()");
+  console.log("year : "  , year);
+  console.log("month : " , month);
+  console.log("day : " ,  day);
   switch(formatDiv.innerHTML)
   {
     case "DD/MM/YY" :
-      date = [dateArr[2] , dateArr[1] , dateArr[0]].join("/");
-    break;
+      return [day , month , year].join("/");
+    case "MM/DD/YY":
+      return [month , day , year].join("/");
+    case "YY/MM/DD":
+      return [year, month , day].join("/");
+    case "YY/DD/MM":
+      return [year , day , month].join("/");
   }
-  return date;
 }
 
 // ################# UTILITY CLASSES ######################### 
 class Question {
   constructor(date)
   {
-    this.date = getFormattedDate(date);
+    this.date = getFormattedDate(...date.split("/"));
     this.day = new Date(date).getDay();
     this.answer = -1 ;
   }
@@ -98,8 +105,16 @@ async function gameStart(p_time , p_startKey){
   //show countdown and game block block
   document.getElementById("countdown-div").style.display = "flex";
   document.getElementById("game-wrapper").style.display = "block";
+  // set countdown block to black
+  document.getElementById("signal-red").style.backgroundColor = "black";
+  document.getElementById("signal-yellow").style.backgroundColor = "black";
+  document.getElementById("signal-green").style.backgroundColor = "black";
   //Set game Timer
   document.getElementById("live-timer-div").innerHTML = p_time;
+  // set date to 0000
+  document.getElementById("date-question-div").innerHTML = getFormattedDate("0000","00","00");
+  //set attempted to 0
+  document.getElementById("counter-div").innerHTML = "<p>Attempted : 0 </p>" ;
   await delay(0.5);
   //change opacity of countdown and game block
   document.getElementById("countdown-div").style.opacity = "1";
@@ -108,7 +123,7 @@ async function gameStart(p_time , p_startKey){
 
   // reset variables 
   questions = [];
-  score = 0;
+  attempted = 0;
   timer = p_time ;
   startKey = p_startKey;
   keyPressed = -1;
@@ -116,9 +131,6 @@ async function gameStart(p_time , p_startKey){
   createWeekDaysMapping();
 ;
 //starting countdown
-document.getElementById("signal-red").style.backgroundColor = "black";
-document.getElementById("signal-yellow").style.backgroundColor = "black";
-document.getElementById("signal-green").style.backgroundColor = "black";
 document.getElementById("signal-red").style.backgroundColor = "red";
 await delay(1);
 document.getElementById("signal-red").style.backgroundColor = "black";
@@ -136,24 +148,28 @@ timeIntervalId = setInterval(()=>{
   document.getElementById("live-timer-div").innerHTML = timer;
   if(timer <= 0)
   {
-    // stop timer
-    clearInterval(timeIntervalId);
-    // remove event Listeners
-  document.removeEventListener("keydown", keyDownFunc );
-  document.removeEventListener("keyup" , keyUpFunc) ;
-    let btns =document.getElementsByClassName("btn");
-    for(let i=0 ; i < 7 ; i++)
-    {
-      console.log("Removing Button " , i+1)
-      btns[i].removeEventListener("mousedown" , btnDownFuncs[i]) ;  
-      btns[i].removeEventListener("mouseup" , btnUpFuncs[i]) ; 
-    }
-    console.log(typeof(questions))
-    questions.pop();
-    endGame();
+    endGameWrapper();
   }
 } , 1000)
-
+// end game wrapper
+function endGameWrapper(){
+  // stop timer
+  clearInterval(timeIntervalId);
+  // remove event Listeners
+  document.removeEventListener("keydown", keyDownFunc );
+  document.removeEventListener("keyup" , keyUpFunc) ;
+  let btns =document.getElementsByClassName("btn");
+  for(let i=0 ; i < 7 ; i++)
+  {
+    console.log("Removing Button " , i+1)
+    btns[i].removeEventListener("mousedown" , btnDownFuncs[i]) ;  
+    btns[i].removeEventListener("mouseup" , btnUpFuncs[i]) ; 
+  }
+  document.getElementById("finish-btn").removeEventListener("mousedown" , finishBtnDown);
+  console.log(typeof(questions))
+  questions.pop();
+  endGame();
+}
 
   // FUNCTION WHEN BUTTON IS PRESSED 
   function btnPress(btn){
@@ -185,6 +201,9 @@ timeIntervalId = setInterval(()=>{
   function keyUpFunc (event){
     btnUp(parseInt(event.key));
   }
+  function finishBtnDown(){
+    endGameWrapper();
+  }
   // add event listeners
   document.addEventListener("keydown" , keyDownFunc) ;
   document.addEventListener("keyup" , keyUpFunc) ;
@@ -204,15 +223,16 @@ timeIntervalId = setInterval(()=>{
     btns[i].addEventListener("mousedown" , btnDownFuncs[i]) ;    
     btns[i].addEventListener("mouseup" , btnUpFuncs[i]) ;    
   }
-
+  document.getElementById("finish-btn").addEventListener("mousedown" , finishBtnDown);
 // Adding and Displaying random date
+  attempted--;
   updateQuestion();
   //update question function
   function updateQuestion(){
     questions.push(new Question(getRandomDate()));
     document.getElementById("date-question-div").innerHTML = questions[questions.length - 1].getDate();
-    counter++;
-    document.getElementById("counter-div").innerHTML = "<p>Count : " + counter +"</p>" ;
+    attempted++;
+    document.getElementById("counter-div").innerHTML = "<p>Attempted : " + attempted +"</p>" ;
   }
 }
 

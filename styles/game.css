@@ -119,6 +119,44 @@
     transform: translateY(1rem);
 } */
 
+/* ################ FINISH BTN #######################  */
+#finish-btn {
+    /* margin-top: 2rem;
+    margin-left: 16rem; */
+    position: absolute;
+    top:-5rem;
+    right: 0rem;
+    display: inline-block;
+    font-size: 16px;
+    padding: 1rem 3.3rem;
+    -webkit-transform: perspective(200px) rotateX(3deg);
+            transform: perspective(200px) rotateX(3deg);
+    color: white;
+    font-weight: 900;
+    border: none;
+    border-radius: 5px;
+    background: -webkit-gradient(linear, left bottom, left top, from(rgba(63,94,251,1)), to(rgba(70,135,252,1)));
+    background: linear-gradient(0deg, rgba(63,94,251,1) 0%, rgba(70,135,252,1) 100%);
+    -webkit-box-shadow: rgba(63,94,251,0.2) 0px 40px 29px 0px;
+            box-shadow: rgba(63,94,251,0.2) 0px 40px 29px 0px;
+    will-change: transform;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+    border-bottom: 2px solid rgba(70,135,252,1);
+   }
+   
+   #finish-btn:hover {
+    -webkit-transform: perspective(180px) rotateX(8deg) translateY(2px);
+            transform: perspective(180px) rotateX(8deg) translateY(2px);
+   }
+   
+   #finish-btn:active {
+    -webkit-transform: perspective(170px) rotateX(25deg) translateY(5px);
+            transform: perspective(170px) rotateX(25deg) translateY(5px);
+   }
+
+
+
 /* ################### MEDIA QUERIES ######################  */
 @media (max-width:550px)
 {

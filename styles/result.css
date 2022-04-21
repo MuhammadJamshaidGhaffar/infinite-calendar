@@ -30,17 +30,27 @@ th{
     color: bisque;
     background-color: brown;
 }
+ /* ############## stat-go-back-wrapper ###########  */
+ #stat-go-back-wrapper{
+     display: flex;
+     justify-content: space-between;
+     /* position: absolute;
+     top: -5rem;
+     left: 0rem; */
+ }
+
 
 /* ################ go back btn ##################  */
 #result-go-back-btn {
     /* margin-top: 2rem;
     margin-left: 16rem; */
-    position: absolute;
+    /* position: absolute;
     top:-5rem;
-    right: 0rem;
+    right: 0rem; */
     display: inline-block;
     font-size: 16px;
     padding: 1rem 3.3rem;
+    height: fit-content;
     -webkit-transform: perspective(200px) rotateX(3deg);
             transform: perspective(200px) rotateX(3deg);
     color: white;
@@ -74,4 +84,31 @@ th{
    }
    .cross-symbol{
        background-color: red;
+   }
+
+   /* ################## STATS DIV #########################  */
+   #stats-div{
+       /* position: absolute;
+       top: -5rem;
+       left:0rem; */
+       display: flex;
+       width: 60%;
+       flex-wrap: wrap;
+   }
+   .stat-item{
+       font-size: 3rem;
+       margin: 0rem 2rem;
+   }
+   #attempted-div{
+       color: bisque;
+   }
+   #correct-attempt-div{
+    color: #00ff00;
+    
+   }
+   #wrong-attempt-div{
+   color: red;
+   }
+   #accuracy-div{
+    color: aqua;
    }
