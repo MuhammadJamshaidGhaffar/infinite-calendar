@@ -83,7 +83,7 @@ function displayStats(statsObj)
 }
 
 
-async function showHighScore(p_stats=null , p_recordBreakPos=6){
+async function showHighScore(p_stats=null , p_recordBreakPos=6 , local=false){
   console.log("called");
   
   //hide main menu  --------------------------------
@@ -95,6 +95,20 @@ async function showHighScore(p_stats=null , p_recordBreakPos=6){
   await delay(0.3);
   document.getElementById("high-score-wrapper").style.opacity = "1";
 
+  if(local)
+  {
+    document.getElementById("high-score-error-message").style.display = "block";
+    console.log("Running local ! can't have saved data!");
+    document.getElementById("high-score-go-back-btn").addEventListener("click" , async function goBack() {  
+      console.log("called high score go back in local");
+      document.getElementById("high-score-go-back-btn").removeEventListener("click" , goBack );
+      document.getElementById("high-score-wrapper").style.opacity = "0";
+      await delay(0.3);
+      document.getElementById("high-score-wrapper").style.display = "none";
+      mainMenu();
+    } );
+    return;
+  }
   //-----------------------------------------------------------------
   let resultArr = [getCookie("c1") , getCookie("c2") , getCookie("c3") , getCookie("c4") , getCookie("c5")];
   let HighScoreTable = document.getElementById("high-score-table");
@@ -515,7 +529,7 @@ async function endGame()
     document.getElementById("result-wrapper").style.display = "none";
     
     //----------------- Check for high Score and record break ------------
-    if(checkRecordBreak(stats.correctAnswers))
+    if(window.location.protocol !== "file:" && checkRecordBreak(stats.correctAnswers) )
     {
       let recordBreakPos = getPosOfRecordBreak(stats.correctAnswers);
       showHighScore(stats ,recordBreakPos);   // if record breaks show high score panel and enter his/her name
@@ -608,8 +622,15 @@ function changeFormat(){
   document.getElementById("start-key-btn").removeEventListener("click" , changeStartKey);
   document.getElementById("format-btn").removeEventListener("click" , changeFormat);
   document.getElementById("high-score-btn").removeEventListener("click" , showHighScoreWrapper);
+  if (window.location.protocol === "file:") 
+  {
+    console.log("Running as local file!");
+    showHighScore(null,6,true);
+  }
+  else{
 
-  showHighScore();
+    showHighScore();
+  }
  }
   
 
