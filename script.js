@@ -81,6 +81,8 @@ function displayStats(statsObj)
   document.getElementById("wrong-attempt-div").innerHTML = "Wrong : " + statsObj['wrongAnswers'];
   document.getElementById("accuracy-div").innerHTML = "Accuracy = " + statsObj['accuracy'] + "%";
 }
+
+
 async function showHighScore(p_stats=null , p_recordBreakPos=6){
   console.log("called");
   
@@ -107,7 +109,7 @@ async function showHighScore(p_stats=null , p_recordBreakPos=6){
   {
     showScoreOnDiv(i);
   }
-  
+  //----------- functions ---------------------
   function showScoreOnDiv(i , add=0){
     let  resultItemArr = resultArr[i].split(",");
     console.log(resultItemArr);
@@ -123,16 +125,8 @@ async function showHighScore(p_stats=null , p_recordBreakPos=6){
     <th>${date}</th>
 </tr>`
   }
-  addNewScore(p_recordBreakPos);
-  for(let i=(p_recordBreakPos-1); i<4 ; i++)
-  {
-    showScoreOnDiv(i+1);
-  }
-  if(p_stats != null)
-  {
-    document.getElementById("high-score-go-back-btn").innerHTML = "Save";
-  }
   function addNewScore(pos){
+    console.log("Entering new data");
     let date = new Date();
     date =date.toDateString();
     HighScoreTable.innerHTML += `<tr">   
@@ -143,18 +137,88 @@ async function showHighScore(p_stats=null , p_recordBreakPos=6){
     <th>${date}</th>
 </tr>`
 document.getElementById("enter-name-field").focus();
+return date;
   }
-  
+  function saveScore(name , stats , date , pos)
+  {
+    setCookie(`c${pos}` , `Name:${name},Score:${stats['correctAnswers']},Accuracy:${stats['accuracy']},Date:${date}`  , 9999);
+  }
+//------------- ----------------------------------------
+let date = undefined;
+let animateId = undefined;
+  if(p_stats != null && p_recordBreakPos < 6)
+  {
+    document.getElementById("high-score-go-back-btn").innerHTML = "Save";
+    date = addNewScore(p_recordBreakPos);  //check here
+    for(let i=(p_recordBreakPos-1); i<4 ; i++)
+  {
+    showScoreOnDiv(i , 1);
+  }
+  animateId = animateCongratsDiv();
+  }
+  else{
+    document.getElementById("high-score-go-back-btn").innerHTML = "Main Menu";
+  }
+
   
   // add go back btn event listener
-  document.getElementById("high-score-go-back-btn").addEventListener("click" , goBack );
-  async function goBack(){
+  document.getElementById("high-score-go-back-btn").addEventListener("click" , async function goBack() {
+    if(p_stats != null && p_recordBreakPos < 6 && document.getElementById("enter-name-field").value == "" )
+    {
+      console.log("Name not entered , Enter name first");
+      return;
+    }
+    if(p_stats != null && p_recordBreakPos < 6 && document.getElementById("enter-name-field").value != "" )
+    {
+      for(let i=4 ; i >= p_recordBreakPos ; i--)
+      {
+        setCookie(`c${i+1}` , getCookie(`c${i}`) , 9999 );
+      }
+      saveScore( document.getElementById("enter-name-field").value , p_stats , date , p_recordBreakPos);
+    }
+    console.log("called high score go back");
+    clearInterval(animateId);
+    document.getElementById("message-div").style.opacity = "0";
+
     document.getElementById("high-score-go-back-btn").removeEventListener("click" , goBack );
     document.getElementById("high-score-wrapper").style.opacity = "0";
     await delay(0.3);
     document.getElementById("high-score-wrapper").style.display = "none";
     mainMenu();
+  } );
+  
+  console.log("High Score panel opened");
+  
+}
+
+async function animateCongratsDiv()
+{
+  let messageDiv = document.getElementById("message-div");
+  messageDiv.style.opacity = "1";
+  let count = 0;
+  let id = setInterval(animate , 600);
+  async function animate()
+  {
+    if(count == 10)
+    {
+      clearInterval(id);
+    }
+    messageDiv.style.color = "bisque";
+    messageDiv.style.transform = "translateY(-1rem)";
+    await delay(0.1);
+    messageDiv.style.color = "aqua";
+    await delay(0.1);
+    messageDiv.style.color = "blue";
+    await delay(0.1);
+    messageDiv.style.color = "blueviolet";
+    messageDiv.style.transform = "translateY(0rem)";
+    await delay(0.1);
+    messageDiv.style.color = "mediumspringgreen";
+    await delay(0.1);
+    count++;
   }
+  return id;
+  
 }
 //---------- cookies functions ---------------------
 // "Name:M.Jamshaid,Score:23,Accuracy:90,Date:Thu Apr 21 2022"
@@ -193,10 +257,24 @@ function getPosOfRecordBreak(p_score){
   for(let i=4; i >= 0; i--){
     let  resultItemArr = resultArr[i].split(",");
     let score = resultItemArr[1].split(":")[1];
-    if (p_score > score)
+    if (p_score > score && i != 0)
       continue;
+    else if(i == 0 && p_score > score)
+    {
+      return 1;
+    }
     else{
       return i+2;
+    }
+  }
+}
+function setDefaultScore()
+{
+  for(let i=1; i<6 ; i++)
+  {
+    if(getCookie(`c${i}`) == "")
+    {
+      setCookie(`c${i}` , `Name:N/A,Score:0,Accuracy:0.00,Date:N/A`  , 9999)  
     }
   }
 }
@@ -428,6 +506,7 @@ async function endGame()
   // Adding go back btn event listener
   document.getElementById("result-go-back-btn").addEventListener('click' , goBack);
   async function goBack(){
+    console.log("removed goBack btn in result screen");
     // Removing go back btn event listener
     document.getElementById("result-go-back-btn").removeEventListener('click' , goBack);
     //hide result menu  --------------------------------
@@ -438,8 +517,8 @@ async function endGame()
     //----------------- Check for high Score and record break ------------
     if(checkRecordBreak(stats.correctAnswers))
     {
-      let recordBreakPos = recordBreakPos(stats.correctAnswers);
-      showHighScore(stats.correctAnswers ,recordBreakPos);   // if record breaks show high score panel and enter his/her name
+      let recordBreakPos = getPosOfRecordBreak(stats.correctAnswers);
+      showHighScore(stats ,recordBreakPos);   // if record breaks show high score panel and enter his/her name
     }
     else{
       mainMenu();
@@ -455,6 +534,16 @@ async function mainMenu(){
   document.getElementById("main-wrapper").style.display = "block";
   await delay(0.3);
   document.getElementById("main-wrapper").style.opacity = "1";
+
+  // add event listeners ----------------------------------------------
+  document.getElementById("timer").addEventListener('focusout' , checkTimerValue);
+  document.getElementById("start-btn").addEventListener("click" , gameStartWrapper);
+  document.getElementById("start-key-btn").addEventListener("click" , changeStartKey);
+  document.getElementById("format-btn").addEventListener("click" , changeFormat);
+  document.getElementById("high-score-btn").addEventListener("click" , showHighScoreWrapper);
+
+  // ------------- Adding Default Score ---------------
+  setDefaultScore();
 
 //Main Menu Functions -----------------------------
 function checkTimerValue()
@@ -518,16 +607,11 @@ function changeFormat(){
   document.getElementById("timer").removeEventListener('focusout' , checkTimerValue);
   document.getElementById("start-key-btn").removeEventListener("click" , changeStartKey);
   document.getElementById("format-btn").removeEventListener("click" , changeFormat);
-  document.getElementById("high-score-btn").removeEventListener("click" , showHighScore);
+  document.getElementById("high-score-btn").removeEventListener("click" , showHighScoreWrapper);
 
   showHighScore();
  }
-  // add event listeners ----------------------------------------------
-  document.getElementById("timer").addEventListener('focusout' , checkTimerValue);
-  document.getElementById("start-btn").addEventListener("click" , gameStartWrapper);
-  document.getElementById("start-key-btn").addEventListener("click" , changeStartKey);
-  document.getElementById("format-btn").addEventListener("click" , changeFormat);
-  document.getElementById("high-score-btn").addEventListener("click" , showHighScoreWrapper);
+  
 
 }
 
